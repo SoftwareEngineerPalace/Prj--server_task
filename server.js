@@ -52,6 +52,6 @@ app.post("/updateTasks", async (req, res) => {
 });
 
 // 启动服务器
-app.listen(3001, () => {
-  console.log("Server started on port 3001");
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
 });

@@ -1,7 +1,7 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mysql = require('mysql2');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mysql = require("mysql2");
 
 const app = express();
 
@@ -11,34 +11,38 @@ app.use(cors());
 
 // 创建 MySQL 数据库连接池
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'yourpassword',
-  database: 'mydatabase'
+  host: "localhost",
+  user: "root",
+  password: "12345678",
+  database: "task",
 });
 
-// 处理 GET 请求
-app.get('/items', (req, res) => {
-  pool.query('SELECT * FROM items', (err, results) => {
+// 获取数据
+app.get("/getTasks", (req, res) => {
+  pool.query("SELECT * FROM task", (err, results) => {
     if (err) throw err;
     res.send(results);
   });
 });
 
-// 处理 POST 请求
-app.post('/items', (req, res) => {
-  const { name, description } = req.body;
+// 存入一条数据
+app.post("/updateTasks", async (req, res) => {
+  const { id, name, priority, duration, deadline } = req.body.list[0]; // 只存入一条数据
 
-  pool.query(
-    `INSERT INTO items (name, description) VALUES ('${name}', '${description}')`,
-    (err, results) => {
-      if (err) throw err;
-      res.send('Item added successfully');
-    }
-  );
+  // 删除表中所有数据
+  pool.query(`DELETE FROM tasks`, (err, results) => {
+    if (err) throw err;
+    pool.query(
+      `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
+      (err, results) => {
+        if (err) throw err;
+        res.send("task added successfully");
+      }
+    );
+  });
 });
 
 // 启动服务器
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+app.listen(3001, () => {
+  console.log("Server started on port 3001");
 });

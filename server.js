@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use(cors({
-  origin: 'http://39.107.119.92'
+  origin: '*'
 }));
 
 app.use(function(req, res, next) {

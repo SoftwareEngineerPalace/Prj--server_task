@@ -7,7 +7,6 @@ const app = express();
 
 // 配置中间件
 app.use(bodyParser.json());
-app.use(cors());
 
 app.use(cors({
   origin: '*'

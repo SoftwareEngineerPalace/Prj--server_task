@@ -8,10 +8,6 @@ const app = express();
 // 配置中间件
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: '*'
-}));
-
 app.use(cors({origin: 'http://39.107.119.92/', methods: ['GET', 'POST'], credentials: true}));
 
 // 创建 MySQL 数据库连接池
@@ -21,6 +17,8 @@ const pool = mysql.createPool({
   password: "12345678",
   database: "task",
 });
+
+console.log('pool', pool);
 
 // 获取数据
 app.get("/getTasks", (req, res) => {

@@ -12,11 +12,7 @@ app.use(cors({
   origin: '*'
 }));
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://39.107.119.92");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+app.use(cors({origin: 'http://39.107.119.92/', methods: ['GET', 'POST'], credentials: true}));
 
 // 创建 MySQL 数据库连接池
 const pool = mysql.createPool({

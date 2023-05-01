@@ -18,10 +18,12 @@ const pool = mysql.createPool({
   database: "task",
 });
 
-console.log('pool', pool);
+// console.log('pool', pool);
 
 // 获取数据
 app.get("/getTasks", (req, res) => {
+  res.send("test 1");
+  return ;
   pool.query("SELECT * FROM task", (err, results) => {
     if (err) throw err;
     res.send(results);

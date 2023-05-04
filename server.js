@@ -22,7 +22,7 @@ const pool = mysql.createPool({
 
 // 获取数据
 app.get("/getTasks", (req, res) => {
-  res.send("test 1 2 3");
+  res.send("任务1 任务2");
   return ;
   pool.query("SELECT * FROM task", (err, results) => {
     if (err) throw err;

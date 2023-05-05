@@ -8,6 +8,11 @@ const app = express();
 // 配置中间件
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://39.107.119.92/');
+  next();
+});
+
 app.use(cors({origin: 'http://39.107.119.92/', methods: ['GET', 'POST'], credentials: true}));
 
 // 创建 MySQL 数据库连接池

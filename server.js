@@ -1,21 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const mysql = require("mysql2");
 
 const app = express();
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://39.107.119.92'); // 允许所有源站发起的跨域请求
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // 允许的 HTTP 请求方法
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // 允许的请求头
+  res.setHeader("Access-Control-Allow-Origin", "http://39.107.119.92"); // 允许所有源站发起的跨域请求
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 允许的 HTTP 请求方法
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允许的请求头
   next();
 });
 
 // 配置中间件
 app.use(bodyParser.json());
-
-// app.use(cors({origin: 'http://39.107.119.92/', methods: ['GET', 'POST'], credentials: true}));
 
 // 创建 MySQL 数据库连接池
 const pool = mysql.createPool({
@@ -29,8 +26,6 @@ const pool = mysql.createPool({
 
 // 获取数据
 app.get("/getTasks", (req, res) => {
-  res.send("任务1 任务2");
-  return ;
   pool.query("SELECT * FROM task", (err, results) => {
     if (err) throw err;
     res.send(results);
@@ -39,7 +34,8 @@ app.get("/getTasks", (req, res) => {
 
 // 存入一条数据
 app.post("/updateTasks", async (req, res) => {
-  const { id, name, priority, duration, deadline } = req.body.list[0]; // 只存入一条数据
+  console.log("准备存入的数据", req.body);
+  const { id, name, priority, duration, deadline } = req.body[0]; // 只存入一条数据
 
   // 删除表中所有数据
   pool.query(`DELETE FROM tasks`, (err, results) => {

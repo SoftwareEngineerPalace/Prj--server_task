@@ -25,11 +25,10 @@ const pool = mysql.createPool({
 // console.log('pool', pool);
 
 // 获取数据
-app.get("/getTasks", (req, res) => {
-  pool.query("SELECT * FROM task", (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
+app.get("/getTasks", async (req, res) => {
+  const getTasks_rsp = await pool.query("SELECT * FROM task");
+  console.log("getTasks_rsp", getTasks_rsp);
+  // res.send(JSON.stringify(results));
 });
 
 // 存入一条数据

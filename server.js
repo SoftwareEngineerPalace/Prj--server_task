@@ -28,7 +28,7 @@ const pool = mysql.createPool({
 app.get("/getTasks", (req, res) => {
   pool.query("SELECT * FROM task", (err, results) => {
     if (err) throw err;
-    res.send(results);
+    res.send(JSON.stringify(results));
   });
 });
 

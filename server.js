@@ -15,19 +15,21 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 // 创建 MySQL 数据库连接池
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "12345678",
-  database: "task",
-}).promise();
+const pool = mysql
+  .createPool({
+    host: "localhost",
+    user: "root",
+    password: "12345678",
+    database: "task",
+  })
+  .promise();
 
 // console.log('pool', pool);
 
 // 获取数据
 app.get("/getTasks", async (req, res) => {
-  const getTasks_rsp = await pool.query("SELECT * FROM task");
-  console.log("getTasks_rsp", getTasks_rsp);
+  const [rows, fields] = await pool.query("SELECT * FROM task");
+  console.log("getTasks_rsp", { rows, fields });
   // res.send(JSON.stringify(results));
 });
 

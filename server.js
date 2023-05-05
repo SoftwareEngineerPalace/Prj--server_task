@@ -33,7 +33,7 @@ app.get("/getTasks", (req, res) => {
 });
 
 // 存入一条数据
-app.post("/updateTasks", async (req, res) => {
+app.post("/saveTasks", async (req, res) => {
   console.log("准备存入的数据", req.body);
   const list = JSON.parse(req.body);
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据

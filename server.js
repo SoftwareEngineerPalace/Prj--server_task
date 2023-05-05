@@ -33,8 +33,8 @@ app.get("/getTasks", async (req, res) => {
   //     return obj;
   //   }, {});
   // });
-  console.log("getTasks_rsp results", results);
-  res.send(JSON.stringify(results));
+  console.log("getTasks_rsp results", results[0]);
+  res.send(JSON.stringify(results[0]));
 });
 
 // 存入一条数据

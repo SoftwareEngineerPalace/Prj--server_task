@@ -40,16 +40,14 @@ app.post("/saveTasks", async (req, res) => {
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
   // 删除表中所有数据
-  pool.query(`DELETE FROM task`, (err, results) => {
-    if (err) throw err;
-    pool.query(
-      `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
-      (err, results) => {
-        if (err) throw err;
-        res.send("task added successfully");
-      }
-    );
-  });
+  const delete_rsp = await pool.query(`DELETE FROM task`);
+  console.log("delete_rsp", delete_rsp);
+
+  // 插入数据
+  const insert_rsp = await pool.query(
+    `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`
+  );
+  console.log("insert_rsp", insert_rsp);
 });
 
 // 启动服务器

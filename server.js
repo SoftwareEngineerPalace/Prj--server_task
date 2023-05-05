@@ -6,7 +6,7 @@ const mysql = require("mysql2");
 const app = express();
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // 允许所有源站发起的跨域请求
+  res.setHeader('Access-Control-Allow-Origin', 'http://39.107.119.92/'); // 允许所有源站发起的跨域请求
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // 允许的 HTTP 请求方法
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // 允许的请求头
   next();

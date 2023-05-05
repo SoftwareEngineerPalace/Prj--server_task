@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 
 const app = express();
 
@@ -15,35 +15,24 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 // 创建 MySQL 数据库连接池
-const pool = mysql
-  .createPool({
-    host: "localhost",
-    user: "root",
-    password: "12345678",
-    database: "task",
-  })
-  .promise();
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "12345678",
+  database: "task",
+});
 
 // console.log('pool', pool);
 
 // 获取数据
 app.get("/getTasks", async (req, res) => {
-  const [rows, fields] = await pool.query("SELECT * FROM task");
+  const results = await pool.query("SELECT * FROM task");
   // const results = rows.map((row) => {
   //   return fields.reduce((obj, field, index) => {
   //     obj[field.name] = row[index];
   //     return obj;
   //   }, {});
   // });
-  const results = rows.map(row => {
-    return {
-      id: row.id,
-      name: row.name,
-      duration: row.duration,
-      deadline: row.deadline,
-      priority: row.priority
-    };
-  });
   console.log("getTasks_rsp results", results);
   res.send(JSON.stringify(results));
 });

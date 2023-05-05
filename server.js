@@ -29,8 +29,14 @@ const pool = mysql
 // 获取数据
 app.get("/getTasks", async (req, res) => {
   const [rows, fields] = await pool.query("SELECT * FROM task");
-  console.log("getTasks_rsp", { rows, fields });
-  // res.send(JSON.stringify(results));
+  const results = rows.map((row) => {
+    return fields.reduce((obj, field, index) => {
+      obj[field.name] = row[index];
+      return obj;
+    }, {});
+  });
+  console.log("getTasks_rsp results", results);
+  res.send(JSON.stringify(results));
 });
 
 // 存入一条数据

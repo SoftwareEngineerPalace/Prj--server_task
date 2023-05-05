@@ -35,7 +35,8 @@ app.get("/getTasks", (req, res) => {
 // 存入一条数据
 app.post("/updateTasks", async (req, res) => {
   console.log("准备存入的数据", req.body);
-  const { id, name, priority, duration, deadline } = req.body[0]; // 只存入一条数据
+  const list = JSON.parse(req.body);
+  const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
   // 删除表中所有数据
   pool.query(`DELETE FROM tasks`, (err, results) => {

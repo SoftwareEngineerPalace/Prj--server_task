@@ -35,6 +35,7 @@ app.get("/getTasks", (req, res) => {
 // 存入一条数据
 app.post("/saveTasks", async (req, res) => {
   console.log("准备存入的数据", req.body);
+  console.log("准备存入的数据的类型", typeof req.body);
   const list = req.body;
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 

@@ -20,7 +20,7 @@ const pool = mysql.createPool({
   user: "root",
   password: "12345678",
   database: "task",
-});
+}).promise();
 
 // console.log('pool', pool);
 

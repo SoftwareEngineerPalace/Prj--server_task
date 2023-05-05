@@ -39,7 +39,7 @@ app.post("/saveTasks", async (req, res) => {
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
   // 删除表中所有数据
-  pool.query(`DELETE FROM tasks`, (err, results) => {
+  pool.query(`DELETE FROM task`, (err, results) => {
     if (err) throw err;
     pool.query(
       `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,

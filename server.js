@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 
 const app = express();
 
@@ -25,34 +25,32 @@ const pool = mysql.createPool({
 // console.log('pool', pool);
 
 // 获取数据
-app.get("/getTasks", async (req, res) => {
-  const results = await pool.query("SELECT * FROM task");
-  // const results = rows.map((row) => {
-  //   return fields.reduce((obj, field, index) => {
-  //     obj[field.name] = row[index];
-  //     return obj;
-  //   }, {});
-  // });
-  console.log("getTasks_rsp results", results[0]);
-  res.send(JSON.stringify(results[0]));
+app.get("/getTasks", (req, res) => {
+  pool.query("SELECT * FROM task").then((err, results) => {
+    console.log("getTasks_rsp results", results);
+    res.send(JSON.stringify(results));
+  });
 });
 
 // 存入一条数据
-app.post("/saveTasks", async (req, res) => {
+app.post("/saveTasks", (req, res) => {
   console.log("准备存入的数据", req.body);
   console.log("准备存入的数据的类型", typeof req.body);
   const list = req.body;
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
   // 删除表中所有数据
-  const delete_rsp = await pool.query(`DELETE FROM task`);
-  console.log("delete_rsp", delete_rsp);
-
-  // 插入数据
-  const insert_rsp = await pool.query(
-    `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`
-  );
-  console.log("insert_rsp", insert_rsp);
+  pool.query(`DELETE FROM task`).then((err, result) => {
+    console.log("删除数据的成功回调", { err, result });
+    // 插入数据
+    pool
+      .query(
+        `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`
+      )
+      .then((err, result) => {
+        console.log("insert_rsp", insert_rsp);
+      });
+  });
 });
 
 // 启动服务器

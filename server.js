@@ -34,19 +34,26 @@ app.get("/getTasks", (req, res) => {
 });
 
 // 存入一条数据
-app.post("/saveTasks", (req, res) => {
+app.post("/saveTasks", async (req, res) => {
   console.log("准备存入的数据", req.body);
   console.log("准备存入的数据的类型", typeof req.body);
   const list = req.body;
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
+  let conn = pool.getConnection();
+
   // 删除表中所有数据
-  pool.query(`DELETE FROM task`, (err, result) => {
+  conn.query(`DELETE FROM task`, (err, result) => {
     console.log("删除数据的成功回调", { err, result });
+   
+    conn.release();
+
+    conn = pool.getConnection();
+
     console.log("准备插入的数据", { id, name, priority, duration, deadline });
     // 插入数据
     try {
-      pool.query(
+      conn.query(
         `INSERT INTO task (id, name, priority, duration, deadline) 
         VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
         (err, result) => {

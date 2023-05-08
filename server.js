@@ -6,7 +6,10 @@ const app = express();
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://39.107.119.92"); // 允许所有源站发起的跨域请求
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // 允许的 HTTP 请求方法
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  ); // 允许的 HTTP 请求方法
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允许的请求头
   next();
 });
@@ -42,13 +45,17 @@ app.post("/saveTasks", (req, res) => {
     console.log("删除数据的成功回调", { err, result });
     console.log("准备插入的数据", { id, name, priority, duration, deadline });
     // 插入数据
-    pool.query(
-      `INSERT INTO task (id, name, priority, duration, deadline) 
-      VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
-      (err, result) => {
-        console.log("insert_rsp", insert_rsp);
-      }
-    );
+    try {
+      pool.query(
+        `INSERT INTO task (id, name, priority, duration, deadline) 
+        VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
+        (err, result) => {
+          console.log("insert_rsp", insert_rsp);
+        }
+      );
+    } catch (error) {
+      console.log("error 1", JSON.stringify(error));
+    }
   });
 });
 

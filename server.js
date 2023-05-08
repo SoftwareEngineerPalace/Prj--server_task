@@ -22,8 +22,6 @@ const pool = mysql.createPool({
   database: "task",
 });
 
-// console.log('pool', pool);
-
 // 获取数据
 app.get("/getTasks", (req, res) => {
   pool.query("SELECT * FROM task", (err, results) => {
@@ -42,9 +40,11 @@ app.post("/saveTasks", (req, res) => {
   // 删除表中所有数据
   pool.query(`DELETE FROM task`, (err, result) => {
     console.log("删除数据的成功回调", { err, result });
+    console.log("准备插入的数据", { id, name, priority, duration, deadline });
     // 插入数据
     pool.query(
-      `INSERT INTO task (id, name, priority, duration, deadline) VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
+      `INSERT INTO task (id, name, priority, duration, deadline) 
+      VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
       (err, result) => {
         console.log("insert_rsp", insert_rsp);
       }

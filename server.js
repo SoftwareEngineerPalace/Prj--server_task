@@ -40,29 +40,25 @@ app.post("/saveTasks", async (req, res) => {
   const list = req.body;
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
 
-  let conn = pool.getConnection();
+  pool.getConnection((err, connection) => {
+    // 删除表中所有数据
+    connection.query(`DELETE FROM task`, (err, result) => {
+      console.log("删除数据的成功回调", { err, result });
 
-  // 删除表中所有数据
-  conn.query(`DELETE FROM task`, (err, result) => {
-    console.log("删除数据的成功回调", { err, result });
-   
-    conn.release();
-
-    conn = pool.getConnection();
-
-    console.log("准备插入的数据", { id, name, priority, duration, deadline });
-    // 插入数据
-    try {
-      conn.query(
-        `INSERT INTO task (id, name, priority, duration, deadline) 
-        VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
-        (err, result) => {
-          console.log("insert_rsp", insert_rsp);
-        }
-      );
-    } catch (error) {
-      console.log("error 1", JSON.stringify(error));
-    }
+      console.log("准备插入的数据", { id, name, priority, duration, deadline });
+      // 插入数据
+      try {
+        connection.query(
+          `INSERT INTO task (id, name, priority, duration, deadline) 
+      VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
+          (err, result) => {
+            console.log("插入数据后的回调", { err, result });
+          }
+        );
+      } catch (error) {
+        console.log("插入数据报错", JSON.stringify(error));
+      }
+    });
   });
 });
 

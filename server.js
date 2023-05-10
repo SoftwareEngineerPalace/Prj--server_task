@@ -40,6 +40,10 @@ app.post("/saveTasks", async (req, res) => {
   console.log("准备存入的数据的类型", typeof req.body);
   const list = req.body;
   const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
+  const values = list.map((v) => {
+    const { id, name, priority, duration, deadline } = v;
+    return [id, name, priority, duration, deadline];
+  });
 
   pool.getConnection((err, connection) => {
     // 删除表中所有数据
@@ -47,11 +51,13 @@ app.post("/saveTasks", async (req, res) => {
       console.log("删除数据的成功回调", { err, result });
 
       console.log("准备插入的数据", { id, name, priority, duration, deadline });
+
       // 插入数据
       try {
         connection.query(
           `INSERT INTO task (id, name, priority, duration, deadline) 
-      VALUES ('${id}', '${name}', ${priority}, ${duration}, '${deadline}')`,
+      VALUES ?`,
+          values,
           (err, result) => {
             console.log("插入数据后的回调", { err, result });
           }

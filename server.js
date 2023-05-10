@@ -48,8 +48,7 @@ app.post("/saveTasks", async (req, res) => {
   pool.getConnection((err, connection) => {
     // 删除表中所有数据
     connection.query(`DELETE FROM task`, (err, result) => {
-      console.log("删除数据的成功回调", { err, result });
-      console.log("准备插入的数据", values);
+      console.log("删除数据成功后，准备插入的数据", values);
 
       if (values.length === 0) return;
 

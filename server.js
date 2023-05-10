@@ -26,11 +26,11 @@ const pool = mysql.createPool({
 });
 
 // 获取数据
-app.get("/getTasks", (req, res) => {
-  console.log("server getTasks");
+app.get("/getWork", (req, res) => {
+  console.log("server getWork");
   pool.getConnection((err, connection) => {
     connection.query("SELECT * FROM task", (err, results) => {
-      console.log("server getTasks 回调", results);
+      console.log("server getWork 回调", results);
       res.send(JSON.stringify(results));
       connection.release();
     });
@@ -38,7 +38,7 @@ app.get("/getTasks", (req, res) => {
 });
 
 // 存入一条数据
-app.post("/saveTasks", async (req, res) => {
+app.post("/saveWork", async (req, res) => {
   const list = req.body;
   const values = list.map((v) => {
     const { id, name, priority, duration, deadline } = v;
@@ -70,6 +70,55 @@ app.post("/saveTasks", async (req, res) => {
     });
   });
 });
+
+
+
+// 获取数据
+app.get("/getLife", (req, res) => {
+  console.log("server getLife");
+  pool.getConnection((err, connection) => {
+    connection.query("SELECT * FROM life", (err, results) => {
+      console.log("server getLife 回调", results);
+      res.send(JSON.stringify(results));
+      connection.release();
+    });
+  });
+});
+
+// 存入一条数据
+app.post("/saveLife", async (req, res) => {
+  const list = req.body;
+  const values = list.map((v) => {
+    const { id, name, priority, duration, deadline } = v;
+    return [id, name, priority, duration, deadline];
+  });
+
+  pool.getConnection((err, connection) => {
+    // 删除表中所有数据
+    connection.query(`DELETE FROM life`, (err, result) => {
+      console.log("删除数据成功后，准备插入的数据", values);
+
+      if (values.length === 0) return;
+
+      // 插入数据
+      try {
+        connection.query(
+          `INSERT INTO life (id, name, priority, duration, deadline) 
+      VALUES ?`,
+          [values],
+          (err, result) => {
+            console.log("插入数据后的回调 err", err);
+            connection.release();
+          }
+        );
+      } catch (error) {
+        console.log("插入数据报错", JSON.stringify(error));
+        connection.release();
+      }
+    });
+  });
+});
+
 
 // 启动服务器
 app.listen(3000, () => {

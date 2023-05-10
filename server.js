@@ -59,7 +59,7 @@ app.post("/saveTasks", async (req, res) => {
       VALUES ?`,
           [values],
           (err, result) => {
-            console.log("插入数据后的回调", { err, result });
+            console.log("插入数据后的回调 err", err);
             connection.release();
           }
         );

@@ -29,7 +29,7 @@ const pool = mysql.createPool({
 app.get("/getTasks", (req, res) => {
   console.log("server getTasks");
   pool.query("SELECT * FROM task", (err, results) => {
-    console.log("pool getTasks 回调", results);
+    console.log("server getTasks 回调", results);
     res.send(JSON.stringify(results));
   });
 });

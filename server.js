@@ -27,8 +27,9 @@ const pool = mysql.createPool({
 
 // 获取数据
 app.get("/getTasks", (req, res) => {
+  console.log("server getTasks");
   pool.query("SELECT * FROM task", (err, results) => {
-    console.log("getTasks_rsp results", results);
+    console.log("pool getTasks 回调", results);
     res.send(JSON.stringify(results));
   });
 });

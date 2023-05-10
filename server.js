@@ -39,12 +39,12 @@ app.post("/saveTasks", async (req, res) => {
   console.log("准备存入的数据", req.body);
   console.log("准备存入的数据的类型", typeof req.body);
   const list = req.body;
-  const { id, name, priority, duration, deadline } = list[0]; // 只存入一条数据
   const values = list.map((v) => {
     const { id, name, priority, duration, deadline } = v;
     return [id, name, priority, duration, deadline];
   });
 
+  console.log("准备存入的数据 values", values);
   pool.getConnection((err, connection) => {
     // 删除表中所有数据
     connection.query(`DELETE FROM task`, (err, result) => {

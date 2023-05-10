@@ -28,9 +28,12 @@ const pool = mysql.createPool({
 // 获取数据
 app.get("/getTasks", (req, res) => {
   console.log("server getTasks");
-  pool.query("SELECT * FROM task", (err, results) => {
-    console.log("server getTasks 回调", results);
-    res.send(JSON.stringify(results));
+  pool.getConnection((err, connection) => {
+    connection.query("SELECT * FROM task", (err, results) => {
+      console.log("server getTasks 回调", results);
+      res.send(JSON.stringify(results));
+      connection.release();
+    });
   });
 });
 
@@ -46,7 +49,6 @@ app.post("/saveTasks", async (req, res) => {
     // 删除表中所有数据
     connection.query(`DELETE FROM task`, (err, result) => {
       console.log("删除数据的成功回调", { err, result });
-
       console.log("准备插入的数据", values);
 
       // 插入数据
@@ -57,10 +59,12 @@ app.post("/saveTasks", async (req, res) => {
           [values],
           (err, result) => {
             console.log("插入数据后的回调", { err, result });
+            connection.release();
           }
         );
       } catch (error) {
         console.log("插入数据报错", JSON.stringify(error));
+        connection.release();
       }
     });
   });

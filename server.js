@@ -29,7 +29,7 @@ const pool = mysql.createPool({
 app.get("/getWork", (req, res) => {
   console.log("server getWork");
   pool.getConnection((err, connection) => {
-    connection.query("SELECT * FROM task", (err, results) => {
+    connection.query("SELECT * FROM work", (err, results) => {
       console.log("server getWork 回调", results);
       res.send(JSON.stringify(results));
       connection.release();
@@ -47,7 +47,7 @@ app.post("/saveWork", async (req, res) => {
 
   pool.getConnection((err, connection) => {
     // 删除表中所有数据
-    connection.query(`DELETE FROM task`, (err, result) => {
+    connection.query(`DELETE FROM work`, (err, result) => {
       console.log("删除数据成功后，准备插入的数据", values);
 
       if (values.length === 0) return;
@@ -55,7 +55,7 @@ app.post("/saveWork", async (req, res) => {
       // 插入数据
       try {
         connection.query(
-          `INSERT INTO task (id, name, priority, duration, deadline) 
+          `INSERT INTO work (id, name, priority, duration, deadline) 
       VALUES ?`,
           [values],
           (err, result) => {

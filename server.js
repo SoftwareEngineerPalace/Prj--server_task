@@ -51,6 +51,8 @@ app.post("/saveTasks", async (req, res) => {
       console.log("删除数据的成功回调", { err, result });
       console.log("准备插入的数据", values);
 
+      if (values.length === 0) return;
+
       // 插入数据
       try {
         connection.query(

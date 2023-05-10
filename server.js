@@ -54,7 +54,7 @@ app.post("/saveTasks", async (req, res) => {
         connection.query(
           `INSERT INTO task (id, name, priority, duration, deadline) 
       VALUES ?`,
-          values,
+          [values],
           (err, result) => {
             console.log("插入数据后的回调", { err, result });
           }

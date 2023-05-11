@@ -32,7 +32,7 @@ app.get("/getWork", (req, res) => {
     connection.query("SELECT * FROM work", (err, results) => {
       console.log("server getWork 回调", results);
       res.send(JSON.stringify(results));
-      connection.releaseConnection();
+      pool.releaseConnection();
     });
   });
 });
@@ -60,12 +60,12 @@ app.post("/saveWork", async (req, res) => {
           [values],
           (err, result) => {
             console.log("插入数据后的回调 err", err);
-            connection.releaseConnection();
+            pool.releaseConnection();
           }
         );
       } catch (error) {
         console.log("插入数据报错", JSON.stringify(error));
-        connection.releaseConnection();
+        pool.releaseConnection();
       }
     });
   });
@@ -80,7 +80,7 @@ app.get("/getLife", (req, res) => {
     connection.query("SELECT * FROM life", (err, results) => {
       console.log("server getLife 回调", results);
       res.send(JSON.stringify(results));
-      connection.releaseConnection();
+      pool.releaseConnection();
     });
   });
 });
@@ -108,12 +108,12 @@ app.post("/saveLife", async (req, res) => {
           [values],
           (err, result) => {
             console.log("插入数据后的回调 err", err);
-            connection.releaseConnection();
+            pool.releaseConnection();
           }
         );
       } catch (error) {
         console.log("插入数据报错", JSON.stringify(error));
-        connection.releaseConnection();
+        pool.releaseConnection();
       }
     });
   });

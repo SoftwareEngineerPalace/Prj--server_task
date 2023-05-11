@@ -61,6 +61,7 @@ app.post("/saveWork", async (req, res) => {
           (err, result) => {
             console.log("插入数据后的回调 err", err);
             connection.release();
+            res.status(200).set('Content-Type', 'text/plain').send('Hello World');
           }
         );
       } catch (error) {

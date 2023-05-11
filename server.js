@@ -110,6 +110,7 @@ app.post("/saveLife", async (req, res) => {
           (err, result) => {
             console.log("插入数据后的回调 err", err);
             connection.release();
+            res.status(200).send();
           }
         );
       } catch (error) {

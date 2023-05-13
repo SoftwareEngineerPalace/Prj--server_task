@@ -75,7 +75,7 @@ app.post("/saveWork", async (req, res) => {
 
 
 // 获取数据
-app.get("/getLife", (req, res) => {
+app.get("/api/getLife", (req, res) => {
   console.log("server getLife");
   pool.getConnection((err, connection) => {
     connection.query("SELECT * FROM life", (err, results) => {
@@ -87,7 +87,7 @@ app.get("/getLife", (req, res) => {
 });
 
 // 存入一条数据
-app.post("/saveLife", async (req, res) => {
+app.post("/api/saveLife", async (req, res) => {
   const list = req.body;
   const values = list.map((v) => {
     const { id, name, priority, duration, deadline } = v;

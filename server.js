@@ -26,7 +26,7 @@ const pool = mysql.createPool({
 });
 
 // 获取数据
-app.get("/getWork", (req, res) => {
+app.get("/api/getWork", (req, res) => {
   console.log("server getWork");
   pool.getConnection((err, connection) => {
     connection.query("SELECT * FROM work", (err, results) => {
@@ -38,7 +38,7 @@ app.get("/getWork", (req, res) => {
 });
 
 // 存入一条数据
-app.post("/saveWork", async (req, res) => {
+app.post("/api/saveWork", async (req, res) => {
   const list = req.body;
   const values = list.map((v) => {
     const { id, name, priority, duration, deadline } = v;
